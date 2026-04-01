@@ -539,6 +539,123 @@ describe("Cossack Business", () => {
       console.log("    Listing cancelled");
     });
 
+it("Buys an item (burns NFT + mints MagicTokens to seller)", async () => {
+      // Craft another saber for buy test
+      const buyMintKeypair = Keypair.generate();
+      const mintLen = getMintLen([]);
+      const lamports = await provider.connection.getMinimumBalanceForRentExemption(mintLen);
+
+      const createMintTx = new Transaction().add(
+        SystemProgram.createAccount({
+          fromPubkey: admin.publicKey,
+          newAccountPubkey: buyMintKeypair.publicKey,
+          space: mintLen,
+          lamports,
+          programId: TOKEN_2022_PROGRAM_ID,
+        }),
+        createInitializeMint2Instruction(
+          buyMintKeypair.publicKey, 0, itemConfigPda, null, TOKEN_2022_PROGRAM_ID
+        )
+      );
+      await provider.sendAndConfirm(createMintTx, [buyMintKeypair]);
+
+      // Mint resources for crafting
+      const amounts = [1, 3, 0, 1, 0, 0];
+      for (let i = 0; i < 6; i++) {
+        if (amounts[i] === 0) continue;
+        await resourceManager.methods
+          .mintResource(new anchor.BN(amounts[i]))
+          .accounts({
+            player: admin.publicKey,
+            mintAuthority: mintAuthorityPda,
+            resourceMint: resourceMints[i],
+            playerTokenAccount: resourceATAs[i],
+            tokenProgram: TOKEN_2022_PROGRAM_ID,
+          })
+          .rpc();
+      }
+
+      const buyItemATA = await createATA(buyMintKeypair.publicKey, admin.publicKey);
+
+      const [buyMetadataPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("item_metadata"), buyMintKeypair.publicKey.toBuffer()],
+        itemNft.programId
+      );
+
+      // Craft
+      const remainingAccounts = [];
+      for (let i = 0; i < 6; i++) {
+        remainingAccounts.push({ pubkey: resourceMints[i], isSigner: false, isWritable: true });
+        remainingAccounts.push({ pubkey: resourceATAs[i], isSigner: false, isWritable: true });
+      }
+
+      await crafting.methods
+        .craftItem(0)
+        .accounts({
+          player: admin.publicKey,
+          gameConfig: gameConfigPda,
+          itemMint: buyMintKeypair.publicKey,
+          itemConfig: itemConfigPda,
+          itemMetadata: buyMetadataPda,
+          playerItemTokenAccount: buyItemATA,
+          resourceManagerProgram: resourceManager.programId,
+          itemNftProgram: itemNft.programId,
+          tokenProgram: TOKEN_2022_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .remainingAccounts(remainingAccounts)
+        .rpc();
+
+      // List item
+      const [buyListingPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("listing"), buyMintKeypair.publicKey.toBuffer()],
+        marketplace.programId
+      );
+
+      await marketplace.methods
+        .listItem(new anchor.BN(50))
+        .accounts({
+          seller: admin.publicKey,
+          itemMint: buyMintKeypair.publicKey,
+          itemMetadata: buyMetadataPda,
+          listing: buyListingPda,
+          itemNftProgram: itemNft.programId,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+      // Get MagicToken balance before
+      const magicBefore = await getTokenBalance(magicATA);
+
+      // Buy item (seller = buyer = admin for simplicity)
+      await marketplace.methods
+        .buyItem()
+        .accounts({
+          buyer: admin.publicKey,
+          seller: admin.publicKey,
+          itemMint: buyMintKeypair.publicKey,
+          listing: buyListingPda,
+          sellerItemTokenAccount: buyItemATA,
+          magicMint: magicMintPda,
+          magicConfig: magicConfigPda,
+          magicMintAuthority: magicMintAuthorityPda,
+          sellerMagicTokenAccount: magicATA,
+          magicTokenProgram: magicToken.programId,
+          tokenProgram: TOKEN_2022_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+      // Verify NFT burned
+      const nftBalance = await getTokenBalance(buyItemATA);
+      assert.equal(nftBalance, 0, "NFT should be burned");
+
+      // Verify MagicTokens minted
+      const magicAfter = await getTokenBalance(magicATA);
+      assert.equal(magicAfter - magicBefore, 50, "Should receive 50 MagicTokens");
+      console.log("    Sold item for 50 MagicTokens. Balance:", magicAfter);
+    });
+
     it("Fails to list with zero price", async () => {
       const fakeMint = Keypair.generate();
       const [meta] = PublicKey.findProgramAddressSync(

@@ -3,7 +3,7 @@ use anchor_spl::token_2022::Token2022;
 use resource_manager as rm;
 use resource_manager::cpi::accounts::MintResource;
 
-declare_id!("Ez9XxGMkKUQLQKJJPVgW4QMa1fm4Muyn65qceeLgxHNZ");
+declare_id!("8hbndEaekE2x7qKYBdWhVqqm5sHbnpZZ7pJkgdZ3xrhg");
 
 pub const SEARCH_COOLDOWN: i64 = 60;
 pub const RESOURCE_COUNT: usize = 6;

@@ -6,12 +6,12 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-crafting = "Dc4NvUc5fWDz3HZcWatnsCb4CupHGb1UGWawRhYVWk8q"
-item_nft = "7d5r9XEy9kNNxU7uHuq8p3oiPPocz2LnTyi6UpydFRQh"
-magic_token = "GBNDw9juW9fdTsvSfNQNgeQ15byZxL9yHJfoDn5eSpST"
-marketplace = "8K1tuWtT4vow5wWpwraNEvir84JfHm86DHYBpdrLxpq"
-resource_manager = "545L6ahhtZjXFVtdj97fCee8cb9NcCjjQo2NQHem12KY"
-search = "Ez9XxGMkKUQLQKJJPVgW4QMa1fm4Muyn65qceeLgxHNZ"
+crafting = "FHqRv6fKfxXiXLe1xWeTxwwK7nEEoCBjR54shEvsQptC"
+item_nft = "E3f7Fab3eH6J6DMcyd4yoXhtrmFCMJhu21zZKfjK33ha"
+magic_token = "Gy652wSGwe1tiAhAMNb4xcVsEcVVJD1qvVDeLdDDKPCf"
+marketplace = "H9qAUvfX5qCncku494UC1t2Yg6SXmEsinNuPdcmWWQLU"
+resource_manager = "691PdUpsPbrTAWHkiBNXHjk49FMWoBrTRUsmsyNT7Tjm"
+search = "8hbndEaekE2x7qKYBdWhVqqm5sHbnpZZ7pJkgdZ3xrhg"
 
 [registry]
 url = "https://api.apr.dev"

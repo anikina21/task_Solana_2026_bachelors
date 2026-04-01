@@ -4,7 +4,7 @@ use item_nft::RECIPES;
 use resource_manager::GameConfig;
 use resource_manager::RESOURCE_COUNT;
 
-declare_id!("Dc4NvUc5fWDz3HZcWatnsCb4CupHGb1UGWawRhYVWk8q");
+declare_id!("FHqRv6fKfxXiXLe1xWeTxwwK7nEEoCBjR54shEvsQptC");
 
 #[program]
 pub mod crafting {

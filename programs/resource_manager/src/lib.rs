@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_2022::{self, Token2022, MintTo, Burn};
 
-declare_id!("545L6ahhtZjXFVtdj97fCee8cb9NcCjjQo2NQHem12KY");
+declare_id!("691PdUpsPbrTAWHkiBNXHjk49FMWoBrTRUsmsyNT7Tjm");
 
 pub const RESOURCE_COUNT: usize = 6;
 pub const RESOURCE_SYMBOLS: [&str; RESOURCE_COUNT] = [

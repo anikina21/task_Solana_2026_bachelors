@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_2022::{self, Token2022, MintTo};
 
-declare_id!("GBNDw9juW9fdTsvSfNQNgeQ15byZxL9yHJfoDn5eSpST");
+declare_id!("Gy652wSGwe1tiAhAMNb4xcVsEcVVJD1qvVDeLdDDKPCf");
 
 #[account]
 pub struct MagicConfig {

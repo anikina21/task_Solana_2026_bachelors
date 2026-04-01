@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_2022::{self, Token2022, MintTo, Burn};
 
-declare_id!("7d5r9XEy9kNNxU7uHuq8p3oiPPocz2LnTyi6UpydFRQh");
+declare_id!("E3f7Fab3eH6J6DMcyd4yoXhtrmFCMJhu21zZKfjK33ha");
 
 /// Item types available in the game
 pub const ITEM_COUNT: usize = 4;
