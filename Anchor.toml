@@ -5,7 +5,7 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
+[programs.devnet]
 crafting = "FHqRv6fKfxXiXLe1xWeTxwwK7nEEoCBjR54shEvsQptC"
 item_nft = "E3f7Fab3eH6J6DMcyd4yoXhtrmFCMJhu21zZKfjK33ha"
 magic_token = "Gy652wSGwe1tiAhAMNb4xcVsEcVVJD1qvVDeLdDDKPCf"
@@ -17,7 +17,7 @@ search = "8hbndEaekE2x7qKYBdWhVqqm5sHbnpZZ7pJkgdZ3xrhg"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
